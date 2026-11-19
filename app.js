@@ -1,116 +1,14 @@
-const $ = (selector, scope = document) => scope.querySelector(selector);
-const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
-
-const toast = $('#toast');
-let toastTimer;
-function showToast(message) {
-  toast.querySelector('p').textContent = message;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-}
-
-function switchView(viewName) {
-  $$('.view').forEach(view => view.classList.remove('active'));
-  const target = $(`#${viewName}-view`);
-  if (target) target.classList.add('active');
-
-  $$('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.view === viewName));
-  $$('.mobile-nav button').forEach(item => item.classList.toggle('active', item.dataset.view === viewName));
-
-  const titles = { dashboard: 'Tableau de bord', students: 'Élèves', notifications: 'Notifications', history: 'Historique' };
-  $('#page-title').innerHTML = viewName === 'dashboard' ? 'Bonjour, Awa <span>👋</span>' : titles[viewName];
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-$$('[data-view]').forEach(button => {
-  button.addEventListener('click', () => switchView(button.dataset.view));
-});
-
-$$('.role-switch button').forEach(button => {
-  button.addEventListener('click', () => {
-    $$('.role-switch button').forEach(item => item.classList.remove('active'));
-    button.classList.add('active');
-    if (button.dataset.role === 'parent') {
-      $('#page-title').innerHTML = 'Bonjour, Mamadou <span>👋</span>';
-      $$('.nav-item').forEach(item => item.disabled = false);
-      showToast('Profil parent activé');
-    } else {
-      $('#page-title').innerHTML = 'Bonjour, Awa <span>👋</span>';
-      showToast('Profil accompagnateur activé');
-    }
-  });
-});
-
-$('#open-students')?.addEventListener('click', () => switchView('students'));
-$('#notification-button')?.addEventListener('click', () => switchView('notifications'));
-
-$$('.filter-pills button').forEach(button => {
-  button.addEventListener('click', () => {
-    $$('.filter-pills button').forEach(item => item.classList.remove('active'));
-    button.classList.add('active');
-    const filter = button.dataset.filter;
-    $$('.student-row').forEach(row => {
-      row.style.display = filter === 'all' || row.dataset.status === filter ? 'flex' : 'none';
-    });
-  });
-});
-
-$('#student-search')?.addEventListener('input', event => {
-  const term = event.target.value.toLowerCase();
-  $$('.student-row').forEach(row => {
-    row.style.display = row.textContent.toLowerCase().includes(term) ? 'flex' : 'none';
-  });
-});
-
-$$('.point-button').forEach(button => {
-  button.addEventListener('click', () => {
-    const row = button.closest('.student-row');
-    row.dataset.status = 'present';
-    const tag = $('.presence-tag', row);
-    tag.textContent = 'À bord';
-    tag.classList.remove('waiting');
-    button.outerHTML = '<span>07:21</span><button class="round-action" aria-label="Menu élève">•••</button>';
-    showToast(`${$('.student-info h3', row).textContent} a été pointé(e)`);
-  });
-});
-
-$('#point-all')?.addEventListener('click', () => {
-  $$('.student-row[data-status="waiting"]').forEach(row => {
-    row.dataset.status = 'present';
-    const tag = $('.presence-tag', row);
-    tag.textContent = 'À bord';
-    tag.classList.remove('waiting');
-    const action = $('.student-action', row);
-    action.innerHTML = '<span>07:21</span><button class="round-action" aria-label="Menu élève">•••</button>';
-  });
-  showToast('Tous les élèves ont été pointés');
-});
-
-$('#mark-read')?.addEventListener('click', () => {
-  $$('.notification-row').forEach(row => row.classList.remove('unread'));
-  showToast('Notifications marquées comme lues');
-});
-
-$('#center-map')?.addEventListener('click', () => {
-  const bus = $('#bus-marker');
-  bus.animate([{ transform: 'translate(-50%, -50%) scale(1)' }, { transform: 'translate(-50%, -50%) scale(1.25)' }, { transform: 'translate(-50%, -50%) scale(1)' }], { duration: 600 });
-  showToast('Bus recentré sur la carte');
-});
-
-$('#profile-button')?.addEventListener('click', () => showToast('Compte de Awa Mamadou'));
-
-// Petite simulation du trajet pour rendre la maquette vivante
-let progress = 0;
-setInterval(() => {
-  if (!$('#dashboard-view').classList.contains('active')) return;
-  progress = (progress + 1) % 12;
-  const bus = $('#bus-marker');
-  const positions = [
-    [48,42],[50,40],[52,38],[54,36],[56,34],[58,32],
-    [60,31],[62,30],[64,29],[66,28],[68,27],[70,26]
-  ];
-  const [left, top] = positions[progress];
-  bus.style.left = `${left}%`;
-  bus.style.top = `${top}%`;
-}, 1600);
+const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelectorAll(s)];
+const toast=$('#toast');let timer,deferredInstall;
+function notify(message){$('#toast p').textContent=message;toast.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove('show'),2200)}
+function switchView(v){$$('.view').forEach(x=>x.classList.remove('active'));const t=$('#'+v+'-view');if(t)t.classList.add('active');$$('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$$('.mobile-nav button').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('#page-title').innerHTML=v==='dashboard'?'Bonjour, Awa <span>👋</span>':({students:'Élèves',notifications:'Notifications',history:'Historique'})[v];window.scrollTo({top:0,behavior:'smooth'})}
+$$('[data-view]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));$('#open-students')?.addEventListener('click',()=>switchView('students'));$('#notification-button')?.addEventListener('click',()=>switchView('notifications'));
+$$('.role-switch button').forEach(b=>b.addEventListener('click',()=>{$$('.role-switch button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(b.dataset.role==='parent'){switchView('dashboard');$('#page-title').innerHTML='Bonjour, Mamadou <span>👋</span>';notify('Profil parent activé')}else{$('#page-title').innerHTML='Bonjour, Awa <span>👋</span>';notify('Profil accompagnateur activé')}}));
+$$('.filter-pills button').forEach(b=>b.addEventListener('click',()=>{$$('.filter-pills button').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.student-row').forEach(r=>r.style.display=b.dataset.filter==='all'||r.dataset.status===b.dataset.filter?'flex':'none')}));
+$('#student-search')?.addEventListener('input',e=>{const q=e.target.value.toLowerCase();$$('.student-row').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'flex':'none')});
+$$('.point-button').forEach(b=>b.addEventListener('click',()=>{const r=b.closest('.student-row');r.dataset.status='present';const tag=$('.presence-tag',r);tag.textContent='À bord';tag.classList.remove('waiting');$('.student-action',r).innerHTML='<span>07:21</span><button class="round-action">•••</button>';notify($('.student-info h3',r).textContent+' a été pointé(e)')}));
+$('#point-all')?.addEventListener('click',()=>{$$('.student-row[data-status="waiting"]').forEach(r=>{r.dataset.status='present';const tag=$('.presence-tag',r);tag.textContent='À bord';tag.classList.remove('waiting');$('.student-action',r).innerHTML='<span>07:21</span><button class="round-action">•••</button>'});notify('Tous les élèves ont été pointés')});
+$('#enable-notifications')?.addEventListener('click',async()=>{if(!('Notification' in window)){notify('Les notifications ne sont pas disponibles ici');return}const p=await Notification.requestPermission();notify(p==='granted'?'Notifications activées':'Permission refusée')});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;const b=$('#install-button');if(b)b.hidden=false});
+$('#install-button')?.addEventListener('click',async()=>{if(!deferredInstall){notify('Utilisez le menu Ajouter à l’écran d’accueil');return}deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$('#install-button').hidden=true});
+$('#center-map')?.addEventListener('click',()=>{const b=$('#bus-marker');b.animate([{transform:'translate(-50%, -50%) scale(1)'},{transform:'translate(-50%, -50%) scale(1.25)'},{transform:'translate(-50%, -50%) scale(1)'}],{duration:600});notify('Bus recentré sur la carte')});
