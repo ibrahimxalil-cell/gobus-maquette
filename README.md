@@ -1,20 +1,10 @@
-# GoBus — Maquette interactive
+# gobus-maquette
 
-Maquette responsive pour le suivi sécurisé des transports scolaires.
+Maquette du projet GoBus de sécurisation des transports scolaires.
 
-## Profils inclus
+- [Prototype web](./index.html)
+- [Prototype mobile iPhone / iPad / Android](./mobile/README.md)
 
-- **Accompagnateur** : tableau de bord, suivi du bus, pointage électronique des élèves et historique.
-- **Parent** : aperçu du trajet, heure d’arrivée, suivi de l’élève et notifications.
+La version mobile a été préparée avec Expo et React Native. Elle utilise des données fictives et une carte schématique ; aucune position GPS réelle ni notification ne sont connectées pour l'instant.
 
-## Utilisation
-
-Ouvrez `index.html` dans un navigateur. La maquette peut aussi être publiée avec GitHub Pages.
-
-## Couleurs
-
-- Bleu principal : `#174da4`
-- Bleu foncé : `#0d3b7d`
-- Jaune : `#f6af18`
-- Orange : `#f57c18`
-- Vert sécurité : `#28a879`
+Pour ouvrir la version web, téléchargez le dépôt ZIP, extrayez son contenu, puis ouvrez `index.html` dans un navigateur. Pour utiliser la version mobile, consultez les étapes du [guide mobile](./mobile/README.md).

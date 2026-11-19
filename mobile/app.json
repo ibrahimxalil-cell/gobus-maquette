@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "GoBus",
+    "slug": "gobus-maquette",
+    "version": "1.0.0",
+    "orientation": "default",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#174DA4"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gobus.maquette"
+    },
+    "android": {
+      "package": "com.gobus.maquette",
+      "adaptiveIcon": {
+        "backgroundColor": "#174DA4"
+      }
+    }
+  }
+}
