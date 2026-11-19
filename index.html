@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoBus — Sécurité scolaire</title>
+  <meta name="theme-color" content="#174da4" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="GoBus accueil">
+        <div class="brand-mark">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <rect x="11" y="16" width="42" height="28" rx="8" fill="#fff" />
+            <rect x="16" y="21" width="18" height="12" rx="3" fill="#174da4" />
+            <rect x="38" y="21" width="10" height="12" rx="3" fill="#174da4" />
+            <circle cx="21" cy="46" r="5" fill="#fff" /><circle cx="43" cy="46" r="5" fill="#fff" />
+            <path d="M32 8v12M27 13l5-5 5 5" fill="none" stroke="#f6af18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div><strong>GO BUS</strong><span>Transport sécurisé</span></div>
+      </a>
+
+      <nav class="side-nav" aria-label="Navigation principale">
+        <button class="nav-item active" data-view="dashboard">
+          <span class="nav-icon">⌂</span><span>Tableau de bord</span>
+        </button>
+        <button class="nav-item" data-view="students">
+          <span class="nav-icon">♙</span><span>Élèves</span><b id="student-count">4</b>
+        </button>
+        <button class="nav-item" data-view="notifications">
+          <span class="nav-icon">◉</span><span>Notifications</span><i></i>
+        </button>
+        <button class="nav-item" data-view="history">
+          <span class="nav-icon">↻</span><span>Historique</span>
+        </button>
+      </nav>
+
+      <div class="route-card">
+        <div class="route-card-head"><span>MA LIGNETTE</span><strong>MATIN</strong></div>
+        <div class="route-name"><b>Ligne A</b><span>BS-204</span></div>
+        <div class="route-progress"><span></span></div>
+        <p><b>6</b> arrêts <em>•</em> <b>18 min</b> restantes</p>
+      </div>
+
+      <button class="profile" id="profile-button">
+        <span class="avatar">AM</span>
+        <span><strong>Awa Mamadou</strong><small>Accompagnatrice</small></span>
+        <span class="chevron">›</span>
+      </button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-button" id="menu-button" aria-label="Ouvrir le menu">☰</button>
+        <div>
+          <p id="eyebrow">Mercredi 19 novembre</p>
+          <h1 id="page-title">Bonjour, Awa <span>👋</span></h1>
+        </div>
+        <div class="top-actions">
+          <div class="role-switch" aria-label="Changer de profil">
+            <button class="active" data-role="companion">Accompagnateur</button>
+            <button data-role="parent">Parent</button>
+          </div>
+          <button class="icon-button" id="notification-button" aria-label="Notifications">♢<i></i></button>
+        </div>
+      </header>
+
+      <section class="view active" id="dashboard-view">
+        <div class="dashboard-grid">
+          <article class="status-card">
+            <div class="status-head">
+              <div>
+                <span class="label">TRAJET EN COURS</span>
+                <h2>École Internationale</h2>
+              </div>
+              <span class="live-badge"><i></i> En direct</span>
+            </div>
+
+            <div class="map" id="map">
+              <div class="map-grid"></div>
+              <svg class="map-roads" viewBox="0 0 900 420" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M-40 330 C160 260 230 340 390 240 S650 130 940 210" fill="none" stroke="#fff" stroke-width="42" />
+                <path d="M-40 330 C160 260 230 340 390 240 S650 130 940 210" fill="none" stroke="#dfe8ef" stroke-width="34" />
+                <path d="M120 -30 C140 100 230 145 200 250 S180 390 230 460" fill="none" stroke="#fff" stroke-width="26" />
+                <path d="M120 -30 C140 100 230 145 200 250 S180 390 230 460" fill="none" stroke="#e4ebf1" stroke-width="18" />
+                <path d="M690 -30 C640 80 700 170 630 260 S590 360 610 460" fill="none" stroke="#fff" stroke-width="24" />
+                <path d="M690 -30 C640 80 700 170 630 260 S590 360 610 460" fill="none" stroke="#e4ebf1" stroke-width="16" />
+              </svg>
+              <div class="stop stop-a"><span>1</span><small>Départ</small></div>
+              <div class="stop stop-b"><span>2</span></div>
+              <div class="stop stop-c"><span>3</span></div>
+              <div class="bus-marker" id="bus-marker">
+                <div class="pulse"></div>
+                <div class="bus-icon">🚌</div>
+              </div>
+              <div class="school-pin">École</div>
+            </div>
+
+            <div class="trip-footer">
+              <div class="trip-stat"><span>Heure d’arrivée</span><strong id="arrival-time">07:42</strong><small>dans 18 min</small></div>
+              <div class="trip-divider"></div>
+              <div class="trip-stat"><span>Vitesse</span><strong id="speed">42 <small>km/h</small></strong><small class="safe">Dans la limite</small></div>
+              <button class="outline-button" id="center-map">Centrer le bus</button>
+            </div>
+          </article>
+
+          <aside class="right-column">
+            <article class="next-card">
+              <div class="card-heading"><span>PROCHAIN ARRÊT</span><b id="arrival-mini">07:42</b></div>
+              <div class="next-stop"><div class="stop-symbol">📍</div><div><h3>Rue des Palmiers</h3><p>Pour <b>2 élèves</b></p></div></div>
+              <div class="students-preview">
+                <span class="mini-avatar blue">YM</span><span class="mini-avatar orange">FA</span>
+                <span>Yasmine &amp; Fatou</span>
+              </div>
+            </article>
+
+            <article class="safety-card">
+              <div class="safety-icon">✓</div>
+              <div><span>État du trajet</span><h3>Tout est conforme</h3><p>Dernière vérification : à l'instant</p></div>
+            </article>
+
+            <article class="children-card">
+              <div class="card-heading"><span>ÉLÈVES À BORD</span><button id="open-students">Voir tout</button></div>
+              <div class="child-row"><span class="mini-avatar blue">YD</span><div><b>Yasmine Diallo</b><small>Pointée • 06:58</small></div><span class="status-dot"></span></div>
+              <div class="child-row"><span class="mini-avatar orange">FA</span><div><b>Fatou Abdallah</b><small>Pointée • 07:04</small></div><span class="status-dot"></span></div>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="students-view">
+        <div class="section-head">
+          <div><p>Pointage électronique</p><h2>Liste des élèves</h2></div>
+          <button class="primary-button" id="point-all">✓ Pointer tous les présents</button>
+        </div>
+        <div class="students-toolbar">
+          <label class="search">⌕ <input type="search" id="student-search" placeholder="Rechercher un élève" /></label>
+          <div class="filter-pills"><button class="active" data-filter="all">Tous <b>4</b></button><button data-filter="present">À bord <b>2</b></button><button data-filter="waiting">En attente <b>2</b></button></div>
+        </div>
+        <div class="student-list" id="student-list">
+          <article class="student-row" data-status="present"><span class="big-avatar blue">YD</span><div class="student-info"><h3>Yasmine Diallo</h3><p>Classe CP2 • Arrêt du marché</p></div><span class="presence-tag">À bord</span><div class="student-action"><span>06:58</span><button class="round-action" aria-label="Menu élève">•••</button></div></article>
+          <article class="student-row" data-status="present"><span class="big-avatar orange">FA</span><div class="student-info"><h3>Fatou Abdallah</h3><p>Classe CE1 • Rue des Palmiers</p></div><span class="presence-tag">À bord</span><div class="student-action"><span>07:04</span><button class="round-action" aria-label="Menu élève">•••</button></div></article>
+          <article class="student-row" data-status="waiting"><span class="big-avatar green">MK</span><div class="student-info"><h3>Moussa Kaboré</h3><p>Classe CM1 • Rue des Palmiers</p></div><span class="presence-tag waiting">En attente</span><div class="student-action"><button class="point-button">Pointer</button><button class="round-action" aria-label="Menu élève">•••</button></div></article>
+          <article class="student-row" data-status="waiting"><span class="big-avatar purple">AN</span><div class="student-info"><h3>Aïcha N'Diaye</h3><p>Classe CP1 • Avenue Centrale</p></div><span class="presence-tag waiting">En attente</span><div class="student-action"><button class="point-button">Pointer</button><button class="round-action" aria-label="Menu élève">•••</button></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="notifications-view">
+        <div class="section-head"><div><p>Centre d'informations</p><h2>Notifications</h2></div><button class="outline-button" id="mark-read">Tout marquer comme lu</button></div>
+        <div class="notification-list">
+          <article class="notification-row unread"><div class="notification-icon blue-bg">⌖</div><div><h3>Le bus approche de votre arrêt</h3><p>Arrivée estimée dans 4 minutes à Rue des Palmiers.</p><small>À l'instant</small></div><button class="round-action">×</button></article>
+          <article class="notification-row unread"><div class="notification-icon yellow-bg">✓</div><div><h3>Yasmine est montée dans le bus</h3><p>Pointage confirmé à l'arrêt du marché.</p><small>Il y a 12 minutes</small></div><button class="round-action">×</button></article>
+          <article class="notification-row"><div class="notification-icon green-bg">✓</div><div><h3>Le trajet a commencé</h3><p>Le bus BS-204 est parti de son point de départ.</p><small>Il y a 28 minutes</small></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="history-view">
+        <div class="section-head"><div><p>Activité récente</p><h2>Historique des trajets</h2></div></div>
+        <div class="history-list">
+          <article><div class="history-date"><b>19</b><span>NOV</span></div><div><h3>Matin — École Internationale</h3><p>06:30 → 07:42 • 4 élèves à bord</p></div><span class="complete-tag">Terminé</span></article>
+          <article><div class="history-date"><b>18</b><span>NOV</span></div><div><h3>Soir — Domiciles</h3><p>16:10 → 17:35 • Aucun incident</p></div><span class="complete-tag">Terminé</span></article>
+        </div>
+      </section>
+
+      <nav class="mobile-nav" aria-label="Navigation mobile">
+        <button class="active" data-view="dashboard"><span>⌂</span><small>Accueil</small></button>
+        <button data-view="students"><span>♙</span><small>Élèves</small></button>
+        <button data-view="notifications"><span>◉</span><small>Alertes</small></button>
+        <button data-view="history"><span>↻</span><small>Historique</small></button>
+      </nav>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status"><span>✓</span><p>Action effectuée</p></div>
+  <script src="app.js"></script>
+</body>
+</html>
